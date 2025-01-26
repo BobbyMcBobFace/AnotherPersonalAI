@@ -1,4 +1,3 @@
-from annotated_types import T
 from groq import Groq
 from dotenv import load_dotenv
 from pathlib import Path
