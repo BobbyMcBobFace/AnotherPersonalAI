@@ -21,13 +21,6 @@ This is not complete and is only a small part of a much larger project
 3. Head to <https://console.groq.com/keys> and generate an API Key
 4. Create a `.env` file in the project root and add your Groq API key:
 
-Choose from the following modes:
-
-- Simple: Quick interaction with the default model
-- Advanced: Select a specific model for text generation
-- Models: List available AI models
-- Exit: Terminate the program
-
 ## Functions
 
 - `simple_mode()`: Interact with the default AI model
