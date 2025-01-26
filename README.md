@@ -49,4 +49,4 @@ Contributions, issues, and feature requests are welcome. Feel free to check [iss
 
 ## Author
 
-Your Name - [@BobbyMcBobFace](https://github.com/BobbyMcBobFace)
+[@BobbyMcBobFace](https://github.com/BobbyMcBobFace)
