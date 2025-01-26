@@ -1,12 +1,18 @@
+from groq import Groq
+from dotenv import load_dotenv
+from pathlib import Path
+
+import requests 
 import os
 
-from groq import Groq
+load_dotenv(dotenv_path=Path('.') / '.env')
 
+# Simple mode - Only a prompt, nothing else 
 def simple_mode():
     
     # Api
     client = Groq(
-        api_key=os.environ.get("GROQ_API_KEY"),
+        api_key = os.getenv("GROQ_API_KEY"),
     )
 
     # Input
@@ -26,27 +32,40 @@ def simple_mode():
             "content": chat_content,
         }
     ],
-    # Specify
-    model="llama-3.3-70b-versatile",
+    model="mixtral-8x7b-32768",
     )
 
     result = chat_completion.choices[0].message.content
     print(result)
 
-    with open('result.md', 'w') as f:
-        f.write(result)
-    print("Result saved to result.md")
+
+def models():
+
+    api_key = os.environ.get("GROQ_API_KEY")
+    url = "https://api.groq.com/openai/v1/models"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.get(url, headers=headers)
+
+    print(response.json())
 
 def main():
 
     # Mode
-    mode = input("What mode do you want to use? (Simple/Advanced): ").lower()
+    mode = input("What mode do you want to use? (Simple/Advanced/Models): ").lower()
     if mode == "simple":
         simple_mode()
 
     elif mode == "advanced":
         print("Work in Progress")
         raise NotImplementedError("Advanced mode is not yet implemented")
+
+    elif mode == "models":
+        models()
 
     else:
         raise ValueError("Invalid mode selected")
