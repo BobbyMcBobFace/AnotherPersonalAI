@@ -5,6 +5,8 @@ from pathlib import Path
 from httpx import stream
 import requests 
 import os
+import json
+import re
 
 load_dotenv(dotenv_path=Path('.') / '.env')
 
@@ -22,8 +24,8 @@ def simple_mode():
 
     # Confirmation    
     if input("Do you want to continue? (yes/no): ").lower() != "yes":
-        print("Exiting...")
-        return
+        print("\nReturning to main menu...")
+        main()
 
     # Query the LLM 
     stream = client.chat.completions.create(
@@ -33,27 +35,12 @@ def simple_mode():
             "content": chat_content,
         }
     ],
-    model="mixtral-8x7b-32768",
+    model="llama-3.3-70b-versatile",
     stream=True,
     )
 
     for chunk in stream:
         print(chunk.choices[0].delta.content, end="")
-
-
-def models():
-
-    api_key = os.environ.get("GROQ_API_KEY")
-    url = "https://api.groq.com/openai/v1/models"
-
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-
-    response = requests.get(url, headers=headers)
-
-    print(response.json())
 
 def advanced_mode():
 
@@ -63,42 +50,75 @@ def advanced_mode():
     )
 
     # Input
-    chat_content = input("Hi, I'm Groq. How may I help you today? ")
+    models()    
+    selected_model = input("\nPlease select your chosen AI model. For more info, visit https://console.groq.com/docs/models: ")
+    chat_content = input("\nHi, I'm Groq. How may I help you today? ")
     print("Your input is:", chat_content)
+    print("Your selected model is:", selected_model)
 
     # Confirmation    
     if input("Do you want to continue? (yes/no): ").lower() != "yes":
-        print("Exiting...")
-        return
+        print("\nReturning to main menu...")
+        main()
 
     # Query the LLM 
-    chat_completion = client.chat.completions.create(
+    stream = client.chat.completions.create(
     messages=[
         {
             "role": "user",
             "content": chat_content,
         }
     ],
-    model="mixtral-8x7b-32768",
+    model=selected_model,
+    stream=True,
     )
 
-    result = chat_completion.choices[0].message.content
-    print(result)
+    for chunk in stream:
+        print(chunk.choices[0].delta.content, end="")
 
+
+def models():
+    api_key = os.getenv("GROQ_API_KEY")
+    url = "https://api.groq.com/openai/v1/models"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        
+        # Regex match "id" and "owned_by" fields
+        pattern = r'"id":\s*"([^"]*)".*?"owned_by":\s*"([^"]*)"'
+        
+        matches = re.findall(pattern, json.dumps(data), re.DOTALL)
+        
+        # Results
+        print("Available models:")
+        for id, owned_by in matches:
+            print(f"ID: {id}, Owned by: {owned_by}")
+    
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
 
 def main():
 
     # Mode
-    mode = input("What mode do you want to use? (Simple/Advanced/Models): ").lower()
+    mode = input("What mode do you want to use? (Simple/Advanced/Models/Exit): ").lower()
     if mode == "simple":
         simple_mode()
 
     elif mode == "advanced":
-        print("Work in Progress")
-        raise NotImplementedError("Advanced mode is not yet implemented")
+        advanced_mode()
 
     elif mode == "models":
         models()
+
+    elif mode == "exit":
+        raise ValueError("Exited!")
 
     else:
         raise ValueError("Invalid mode selected")
