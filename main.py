@@ -11,7 +11,8 @@ def main():
         from models import models
         models()
     elif mode == "exit":
-        raise ValueError("Exited!")
+        print("Exited!")
+        return
     else:
         raise ValueError("Invalid mode selected")
 
