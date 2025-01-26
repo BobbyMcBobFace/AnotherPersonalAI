@@ -1,16 +1,18 @@
 def main():
-    mode_handlers = {
-        "simple": lambda: __import__("simple_mode").simple_mode(),
-        "advanced": lambda: __import__("advanced_mode").advanced_mode(),
-        "models": lambda: __import__("models").models(),
-        "exit": lambda: print("Exited!")
-    }
-    
+    # Mode
     mode = input("What mode do you want to use? (Simple/Advanced/Models/Exit): ").lower()
-    
-    handler = mode_handlers.get(mode)
-    if handler:
-        handler()
+    if mode == "simple":
+        from simple_mode import simple_mode
+        simple_mode()
+    elif mode == "advanced":
+        from advanced_mode import advanced_mode
+        advanced_mode()
+    elif mode == "models":
+        from models import models
+        models()
+    elif mode == "exit":
+        print("Exited!")
+        return
     else:
         raise ValueError("Invalid mode selected")
 
