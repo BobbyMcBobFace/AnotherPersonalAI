@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Groq AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Groq AI Assistant</h1>
+        
+        <div class="mode-selector">
+            <button id="simple-mode-btn">Simple Mode</button>
+            <button id="advanced-mode-btn">Advanced Mode</button>
+            <button id="models-btn">View Models</button>
+        </div>
+
+
+        <!-- Simple Mode section -->
+        <div id="simple-mode" class="mode-section hidden">
+            <h2>Simple Mode</h2>
+            <textarea id="simple-prompt" placeholder="Enter your prompt..."></textarea>
+            <button id="simple-submit">Send</button>
+            <button class="return-main-menu">Return to Main Menu</button>
+            <div id="simple-response" class="response"></div>
+        </div>
+
+        <!-- Advanced Mode section -->
+        <div id="advanced-mode" class="mode-section hidden">
+            <h2>Advanced Mode</h2>
+            <select id="model-select"></select>
+            <textarea id="system-prompt" placeholder="System behavior..."></textarea>
+            <textarea id="advanced-prompt" placeholder="Enter your prompt..."></textarea>
+            <button id="advanced-submit">Send</button>
+            <button class="return-main-menu">Return to Main Menu</button>
+            <div id="advanced-response" class="response"></div>
+        </div>
+
+        <!-- Models section -->
+        <div id="models-section" class="mode-section hidden">
+            <h2>Available Models</h2>
+            <div id="models-list"></div>
+            <button class="return-main-menu">Return to Main Menu</button>
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

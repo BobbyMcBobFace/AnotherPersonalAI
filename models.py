@@ -7,7 +7,7 @@ from pathlib import Path
 
 load_dotenv(dotenv_path=Path('.') / '.env')
 
-def models():
+def list_models():  # Change from models() to list_models()
     api_key = os.getenv("GROQ_API_KEY")
     url = "https://api.groq.com/openai/v1/models"
 
