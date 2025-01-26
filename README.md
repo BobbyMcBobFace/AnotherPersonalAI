@@ -34,7 +34,7 @@ This tool uses the Groq API. For more information, visit [Groq API Documentation
 
 ## License
 
-[MIT License](LICENSE.txt)
+[MIT License](LICENSE)
 
 ## Contributing
 
